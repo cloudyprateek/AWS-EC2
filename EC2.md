@@ -1,10 +1,6 @@
 
-
-  Amazon EC2 
-
----
-
-#  Elastic Compute Cloud (EC2)
+ 
+ #  Elastic Compute Cloud (EC2)
 
 Amazon EC2 (Elastic Compute Cloud) is a web service that allows you to run virtual servers in the cloud. It provides scalable, secure, and cost‑efficient compute capacity, allowing you to deploy applications without buying physical hardware.
 
@@ -111,7 +107,7 @@ Acts like a “lock” installed on the server.
 
 You use this to unlock and log in securely.
 
->  Never share private key.
+  Never share private key.
 
 ---
 
@@ -131,6 +127,26 @@ A **security group** acts as a virtual firewall for your instance.
 
 Security groups help ensure only trusted sources can connect.
 
+---
+
+## A) Launching an EC2 Instance (AWS Management Console)
+
+1. **Login to AWS Console**: Go to [AWS Console](https://aws.amazon.com/console/).  
+2. **Navigate to EC2 Service**: Search for **EC2** in the search bar and select it.  
+3. **Launch Instance**:
+   - Click **Launch Instances**.
+   - Choose an **Amazon Machine Image (AMI)** (e.g., Amazon Linux 2 Macos, ubantu).  
+   - Select **Instance Type** (e.g., t2.micro for free tier).  
+   - Configure **Instance Details** (default VPC and subnet is fine for basic setup).  
+   - Add **Storage**: By default, root volume is attached. You can add additional EBS volumes here.  
+   - Add **Tags** (optional) to identify your instance.  
+   - Configure **Security Group**: Allow SSH (port 22) access from your IP.  
+   - Click **Launch**, then select an existing key pair or create a new one. Download the `.pem` file.  
+
+4. **Connect to EC2 Instance**:
+```bash
+ssh -i "your-key.pem" ec2-user@<EC2-Public-IP>
+```
 ---
 
 #  EC2 Instance States
@@ -217,7 +233,7 @@ ssh -i mykey.pem ec2-user@<public-ip>
 | RDP     | 3389 |
 
 
-##  Amazon Machine Image (AMI)
+## B)  Amazon Machine Image (AMI)
 
 An AMI defines the template used to launch EC2 instances. It acts like a snapshot of your machine that can be reused.
 
@@ -236,26 +252,19 @@ An AMI defines the template used to launch EC2 instances. It acts like a snapsho
 * Custom AMIs (created from your running server)
 * Community AMIs
 
-##  Status Checks in EC2
+## . Creating an AMI Image from an EC2 Instance (GUI)
 
-AWS runs automatic health checks to ensure your instance is working properly.
-
-### **1. System Status Check**
-
-Checks AWS infrastructure (network outage, power failure, physical host health).
-
-### **2. Instance Status Check**
-
-Checks your instance-level issues:
-
-* Boot errors
-* OS corruption
-* Network misconfiguration
-
-### **3. EBS Volume Status Check**
-
-Checks I/O performance and health of attached volumes.
+1. Go to **EC2 → Instances** and select the instance you want to create an image from.  
+2. Click **Actions → Image → Create Image**.  
+3. Fill in the details:
+   - **Image Name:** e.g., `MyEC2Backup`  
+   - **Image Description:** Optional, e.g., "Backup before updates"  
+   - **No Reboot:** Check if you do not want the instance to reboot during image creation  
+4. Click **Create Image**.  
+5. The AMI will appear under **Images → AMIs**.  
+6. You can use this AMI to launch new instances with the same configuration as the original instance.
 
 ---
+
 
 
